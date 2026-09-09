@@ -307,9 +307,7 @@ theorem ι_range_disjoint_one :
 
 variable (R M)
 
-/-- Construct a product of `n` elements of the module within the tensor algebra.
-
-See also `PiTensorProduct.tprod`. -/
+/-- Construct a product of `n` elements of the module within the tensor algebra. -/
 def tprod (n : ℕ) : MultilinearMap R (fun _ : Fin n => M) (TensorAlgebra R M) :=
   (MultilinearMap.mkPiAlgebraFin R n (TensorAlgebra R M)).compLinearMap fun _ => ι R
 
