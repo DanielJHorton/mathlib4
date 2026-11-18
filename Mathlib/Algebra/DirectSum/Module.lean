@@ -523,11 +523,18 @@ theorem isInternal_submodule_iff_iSupIndep_and_iSup_eq_top (A : ι → Submodule
 /-- If a collection of submodules has just two indices, `i` and `j`, then
 `DirectSum.IsInternal` is equivalent to `isCompl`. -/
 theorem isInternal_submodule_iff_isCompl (A : ι → Submodule R M) {i j : ι} (hij : i ≠ j)
-    (h : (Set.univ : Set ι) = {i, j}) : IsInternal A ↔ IsCompl (A i) (A j) := by
+    (h : Set.univ = {i, j}) : IsInternal A ↔ IsCompl (A i) (A j) := by
   have : ∀ k, k = i ∨ k = j := fun k ↦ by simpa using Set.ext_iff.mp h k
   rw [isInternal_submodule_iff_iSupIndep_and_iSup_eq_top, iSup, ← Set.image_univ, h,
     Set.image_insert_eq, Set.image_singleton, sSup_pair, iSupIndep_pair hij this]
   exact ⟨fun ⟨hd, ht⟩ ↦ ⟨hd, codisjoint_iff.mpr ht⟩, fun ⟨hd, ht⟩ ↦ ⟨hd, ht.eq_top⟩⟩
+
+/-- The submodules `fst` and `snd` of `M × N` are internal -/
+theorem isInternal_submodule_fst_snd {N : Type*} [AddCommGroup N] [Module R N] [Nontrivial (M × N)]
+    (A : ι → Submodule R (M × N)) {i j : ι} (h : Set.univ = {i, j})
+    (Ai : A i = Submodule.fst R M N) (Aj : A j = Submodule.snd R M N) : IsInternal A := by
+  have hij : i ≠ j := fun h ↦ (Submodule.isCompl_fst_snd R M N).ne (Ai ▸ Aj ▸ congrArg A h)
+  exact (isInternal_submodule_iff_isCompl A hij h).mpr (Ai ▸ Aj ▸ Submodule.isCompl_fst_snd R M N)
 
 @[simp]
 theorem isInternal_ne_bot_iff {A : ι → Submodule R M} :
