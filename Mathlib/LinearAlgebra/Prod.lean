@@ -108,7 +108,10 @@ theorem fst_prod (f : M →ₗ[R] M₂) (g : M →ₗ[R] M₃) : (fst R M₂ M�
 theorem snd_prod (f : M →ₗ[R] M₂) (g : M →ₗ[R] M₃) : (snd R M₂ M₃).comp (prod f g) = g := rfl
 
 @[simp]
-theorem pair_fst_snd : prod (fst R M M₂) (snd R M M₂) = LinearMap.id := rfl
+theorem prod_fst_snd : prod (fst R M M₂) (snd R M M₂) = LinearMap.id := rfl
+
+@[deprecated (since := "2026-11-28")]
+alias pair_fst_snd := prod_fst_snd
 
 theorem prod_comp (f : M₂ →ₗ[R] M₃) (g : M₂ →ₗ[R] M₄)
     (h : M →ₗ[R] M₂) : (f.prod g).comp h = (f.comp h).prod (g.comp h) :=
