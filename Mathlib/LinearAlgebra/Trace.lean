@@ -213,11 +213,9 @@ theorem trace_transpose : trace R (Module.Dual R M) ∘ₗ Module.Dual.transpose
   ext f m; simp [e]
 
 theorem trace_prodMap :
-    trace R (M × N) ∘ₗ prodMapLinear R M N M N R =
-      (coprod id id : R × R →ₗ[R] R) ∘ₗ prodMap (trace R M) (trace R N) := by
+    trace R (M × N) ∘ₗ prodMapLinear R M N M N R = coprod (trace R M) (trace R N) := by
   let e := (dualTensorHomEquiv R M M).prodCongr (dualTensorHomEquiv R N N)
-  have h : Function.Surjective e.toLinearMap := e.surjective
-  refine (cancel_right h).1 ?_
+  refine (cancel_right e.surjective).1 ?_
   ext <;> simp [e]
 
 variable {R M N P}
@@ -225,9 +223,7 @@ variable {R M N P}
 theorem trace_prodMap' (f : M →ₗ[R] M) (g : N →ₗ[R] N) :
     trace R (M × N) (prodMap f g) = trace R M f + trace R N g := by
   have h := LinearMap.ext_iff.1 (trace_prodMap R M N) (f, g)
-  simp only [coe_comp, Function.comp_apply, prodMap_apply, coprod_apply, id,
-    prodMapLinear_apply] at h
-  exact h
+  simpa only [coe_comp, Function.comp_apply, coprod_apply, prodMapLinear_apply]
 
 variable (R M N P)
 
